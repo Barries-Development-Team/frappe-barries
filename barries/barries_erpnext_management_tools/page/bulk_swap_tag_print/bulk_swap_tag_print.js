@@ -322,7 +322,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 
 		// Try barcode first, fall back to direct item code lookup
 		frappe.call({
-			method: "barries.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_barcode",
+			method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_barcode",
 			args: { barcode: val },
 			callback: (r) => {
 				if (r.message) addItemToQueue(r.message);
@@ -331,7 +331,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			error: () => {
 				// Barcode not found — try as Item Code
 				frappe.call({
-					method: "barries.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_code",
+					method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_code",
 					args: { item_code: val },
 					callback: (r) => {
 						if (r.message) addItemToQueue(r.message);
@@ -390,7 +390,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 		$("#bstp-print-btn").prop("disabled", true).text("GENERATING...");
 
 		frappe.call({
-			method: "barries.page.bulk_swap_tag_print.bulk_swap_tag_print.get_print_html",
+			method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_print_html",
 			args: { item_codes: JSON.stringify(item_codes) },
 			callback: (r) => {
 				if (!r.message) {
