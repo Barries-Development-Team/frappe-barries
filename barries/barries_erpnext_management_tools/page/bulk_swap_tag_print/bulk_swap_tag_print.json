@@ -1,0 +1,22 @@
+{
+ "content": null,
+ "doctype": "Page",
+ "icon": "fa fa-print",
+ "module": "Barries ERPNext Management Tools",
+ "name": "bulk-swap-tag-print",
+ "page_name": "bulk-swap-tag-print",
+ "restrict_to_domain": null,
+ "roles": [
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Stock Manager"
+  },
+  {
+   "role": "System Manager"
+  }
+ ],
+ "standard": "Yes",
+ "title": "Bulk Swap Tag Print"
+}

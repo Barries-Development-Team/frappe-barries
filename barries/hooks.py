@@ -1,6 +1,6 @@
 app_name = "barries"
 app_title = "Barries ERPNext Management Tools"
-app_publisher = "Barrie\'s Ski and Sports"
+app_publisher = "Barrie's Ski and Sports"
 app_description = "Container app for all scripts, overrides, utilities, etc."
 app_email = "barriesskiandsports@gmail.com"
 app_license = "mit"
@@ -41,6 +41,7 @@ app_license = "mit"
 
 # include js in page
 # page_js = {"page" : "public/js/file.js"}
+page_js = {}
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
@@ -137,11 +138,15 @@ app_license = "mit"
 # ---------------
 # Hook on document methods and events
 
+
 doc_events = {
-	"Item": {
-		"validate": "barries.overrides.item.validate" # Execute additional item.py validation logic.
-	}
+    "Item": {
+        # See item.py for definitions of these methods. We use validate and after_insert to manage Item Price records for Standard Buying and Swap Price, which ERPNext does not handle natively.
+        "validate": "barries.overrides.item.validate",
+        "after_insert": "barries.overrides.item.after_insert",
+    }
 }
+
 
 # Scheduled Tasks
 # ---------------
@@ -244,4 +249,3 @@ doc_events = {
 # ------------
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
-
