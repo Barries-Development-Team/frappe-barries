@@ -328,8 +328,8 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 				if (r.message) addItemToQueue(r.message);
 				$("#bstp-input").val("").focus();
 			},
+			// Barcode not found — try as Item Code
 			error: () => {
-				// Barcode not found — try as Item Code
 				frappe.call({
 					method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_code",
 					args: { item_code: val },
