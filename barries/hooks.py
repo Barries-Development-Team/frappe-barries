@@ -140,9 +140,11 @@ page_js = {}
 
 
 doc_events = {
-	"Item": {
-		"validate": "barries.overrides.item.validate"  # Execute additional item.py validation logic.
-	}
+    "Item": {
+        # See item.py for definitions of these methods. We use validate and after_insert to manage Item Price records for Standard Buying and Swap Price, which ERPNext does not handle natively.
+        "validate": "barries.overrides.item.validate",
+        "after_insert": "barries.overrides.item.after_insert",
+    }
 }
 
 

@@ -2,10 +2,23 @@ import frappe
 
 
 # ── Price list mapping ─────────────────────────────────────────────────────────
-# Maps Item field name → Price List name
-PRICE_LIST_MAP = {
-    "standard_rate":    "Standard Selling",
-    "valuation_rate":   "Standard Buying",
+# Maps Item field name → Price List name.
+#
+# NOTE: Standard Selling is intentionally excluded here.
+# ERPNext's own Item.after_insert() already handles creating the Standard
+# Selling Item Price from standard_rate. If we also create it in our hook
+# we risk a duplicate record or a race condition. We let ERPNext own that
+# one and only handle the two price lists it does NOT cover natively.
+CUSTOM_PRICE_LIST_MAP = {
+    "valuation_rate":    "Standard Buying",
+    "custom_swap_price": "Swap Price",
+}
+
+# Full map used only for read-back (get_item_prices).
+# Standard Selling is included here because we still want to display it.
+FULL_PRICE_LIST_MAP = {
+    "standard_rate":     "Standard Selling",
+    "valuation_rate":    "Standard Buying",
     "custom_swap_price": "Swap Price",
 }
 
@@ -14,27 +27,40 @@ def validate(doc, method):
     """
     Fires after ERPNext's own Item.validate().
 
-    - On new items: create or update Item Price records for all three
-      price lists using the values currently on the Item form.
-    - On existing items: do nothing — prices are managed via Item Price
-      directly, and the Item fields are read-only in the UI.
-    """
-    if doc.is_new():
-        _upsert_item_prices(doc)
+    On existing items: refreshes custom_swap_price from the Swap Price
+    Item Price record so the Swap Tag print format always has a fresh value.
 
-    # Always keep custom_swap_price in sync with Swap Price Item Price
-    # so the Swap Tag print format always has a fresh value.
-    _refresh_swap_price(doc)
+    On new items: we do NOT create Item Price records here because the doc
+    has not been inserted yet — Item Price requires a saved item_code as a
+    foreign key. Creation is handled in after_insert() instead.
+    """
+    if not doc.is_new():
+        _refresh_swap_price(doc)
+
+
+def after_insert(doc, method):
+    """
+    Fires after ERPNext's own Item.after_insert().
+
+    ERPNext's after_insert already creates the Standard Selling Item Price
+    from standard_rate. We handle Standard Buying and Swap Price here,
+    which ERPNext does not cover natively.
+
+    At this point the item is saved to the database so Item Price foreign
+    key constraints are satisfied.
+    """
+    _upsert_item_prices(doc)
 
 
 def _upsert_item_prices(doc):
     """
-    For each price list in PRICE_LIST_MAP, create or update the
-    corresponding Item Price record using the value on the Item doc.
-    Only runs on new items — after creation prices are managed via
-    the Item Price form.
+    Creates Item Price records for Standard Buying and Swap Price
+    if the corresponding fields have non-zero values on the Item doc.
+
+    Uses upsert logic (check existing before insert) as a safety net
+    in case a record somehow already exists.
     """
-    for field, price_list in PRICE_LIST_MAP.items():
+    for field, price_list in CUSTOM_PRICE_LIST_MAP.items():
         rate = doc.get(field) or 0
         if not rate:
             # Don't create a zero-value Item Price record — skip it
@@ -50,10 +76,10 @@ def _upsert_item_prices(doc):
         )
 
         if existing:
-            # Update the existing record
+            # Already exists — update it rather than creating a duplicate
             frappe.db.set_value("Item Price", existing, "price_list_rate", rate)
         else:
-            # Create a new Item Price record
+            # Create a fresh Item Price record
             item_price = frappe.get_doc({
                 "doctype": "Item Price",
                 "item_code": doc.item_code,
@@ -65,15 +91,10 @@ def _upsert_item_prices(doc):
 
 def _refresh_swap_price(doc):
     """
-    Always pull the latest Swap Price Item Price value into
-    custom_swap_price so the Swap Tag print format stays current,
-    even when prices are edited directly in Item Price.
-    Only runs on existing items — on new items _upsert_item_prices
-    handles the initial value.
+    Pulls the latest Swap Price Item Price value into custom_swap_price
+    on every save of an existing item, so the Swap Tag print format
+    always reflects the current price without needing a separate lookup.
     """
-    if doc.is_new():
-        return
-
     rate = frappe.db.get_value(
         "Item Price",
         filters={
@@ -93,7 +114,7 @@ def get_item_prices(item_code):
     to populate the read-only price fields with live values.
     """
     result = {}
-    for field, price_list in PRICE_LIST_MAP.items():
+    for field, price_list in FULL_PRICE_LIST_MAP.items():
         rate = frappe.db.get_value(
             "Item Price",
             filters={
