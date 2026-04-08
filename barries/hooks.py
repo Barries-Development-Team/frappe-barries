@@ -138,13 +138,13 @@ page_js = {}
 # ---------------
 # Hook on document methods and events
 
-"""
+
 doc_events = {
 	"Item": {
 		"validate": "barries.overrides.item.validate"  # Execute additional item.py validation logic.
 	}
 }
-"""
+
 
 # Scheduled Tasks
 # ---------------
