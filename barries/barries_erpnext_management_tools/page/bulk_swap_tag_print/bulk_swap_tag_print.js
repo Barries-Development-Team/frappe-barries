@@ -15,7 +15,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 		.bstp-wrap {
 			max-width: 780px;
 			margin: 24px auto;
-			font-family: 'Courier New', monospace;
+			font-family: var(--font-stack);
 		}
 
 		/* ── Input bar ── */
@@ -28,40 +28,40 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			flex: 1;
 			padding: 10px 14px;
 			font-size: 15px;
-			font-family: 'Courier New', monospace;
-			border: 2px solid #1a1a1a;
-			border-radius: 0;
-			background: #fff;
+			font-family: var(--font-stack);
+			border: 2px solid var(--border-color);
+			border-radius: var(--border-radius);
+			background: var(--control-bg);
 			outline: none;
 			transition: border-color 0.15s;
 		}
 		.bstp-input-row input:focus {
-			border-color: #e74c3c;
+			border-color: var(--primary);
 		}
 		.bstp-input-row input::placeholder {
-			color: #aaa;
+			color: var(--text-light);
 			font-style: italic;
 		}
 		.bstp-add-btn {
 			padding: 10px 20px;
-			background: #1a1a1a;
-			color: #fff;
-			font-family: 'Courier New', monospace;
+			background: var(--text-color);
+			color: var(--white);
+			font-family: var(--font-stack);
 			font-size: 15px;
 			font-weight: bold;
-			border: 2px solid #1a1a1a;
+			border: 2px solid var(--text-color);
 			cursor: pointer;
 			transition: background 0.15s, color 0.15s;
 			letter-spacing: 1px;
 		}
 		.bstp-add-btn:hover {
-			background: #e74c3c;
-			border-color: #e74c3c;
+			background: var(--primary);
+			border-color: var(--primary);
 		}
 
 		/* ── Queue table ── */
 		.bstp-table-wrap {
-			border: 2px solid #1a1a1a;
+			border: 2px solid var(--border-color);
 			margin-bottom: 16px;
 		}
 		.bstp-table {
@@ -69,8 +69,8 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			border-collapse: collapse;
 		}
 		.bstp-table thead tr {
-			background: #1a1a1a;
-			color: #fff;
+			background: var(--text-color);
+			color: var(--white);
 		}
 		.bstp-table thead th {
 			padding: 9px 12px;
@@ -84,14 +84,14 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			text-align: right;
 		}
 		.bstp-table tbody tr {
-			border-bottom: 1px solid #e0e0e0;
+			border-bottom: 1px solid var(--border-color);
 			transition: background 0.1s;
 		}
 		.bstp-table tbody tr:last-child {
 			border-bottom: none;
 		}
 		.bstp-table tbody tr:hover {
-			background: #f9f9f9;
+			background: var(--bg-light-gray);
 		}
 		.bstp-table td {
 			padding: 9px 12px;
@@ -103,7 +103,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			font-size: 13px;
 		}
 		.bstp-item-name {
-			color: #555;
+			color: var(--text-muted);
 			font-size: 11px;
 			margin-top: 2px;
 		}
@@ -115,19 +115,19 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			width: 60px;
 			padding: 5px 8px;
 			font-size: 13px;
-			font-family: 'Courier New', monospace;
-			border: 1px solid #ccc;
+			font-family: var(--font-stack);
+			border: 1px solid var(--border-color);
 			text-align: center;
 			border-radius: 0;
 		}
 		.bstp-qty-input:focus {
 			outline: none;
-			border-color: #e74c3c;
+			border-color: var(--primary);
 		}
 		.bstp-remove-btn {
 			background: none;
 			border: none;
-			color: #ccc;
+			color: var(--text-light);
 			font-size: 18px;
 			cursor: pointer;
 			padding: 0 4px;
@@ -135,14 +135,14 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			transition: color 0.15s;
 		}
 		.bstp-remove-btn:hover {
-			color: #e74c3c;
+			color: var(--primary);
 		}
 
 		/* ── Empty state ── */
 		.bstp-empty {
 			padding: 40px;
 			text-align: center;
-			color: #aaa;
+			color: var(--text-light);
 			font-size: 13px;
 			letter-spacing: 1px;
 		}
@@ -155,42 +155,42 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 		}
 		.bstp-clear-btn {
 			padding: 9px 18px;
-			background: #fff;
-			color: #1a1a1a;
-			font-family: 'Courier New', monospace;
+			background: var(--card-bg);
+			color: var(--text-color);
+			font-family: var(--font-stack);
 			font-size: 13px;
-			border: 2px solid #1a1a1a;
+			border: 2px solid var(--border-color);
 			cursor: pointer;
 			letter-spacing: 1px;
 			transition: background 0.15s, color 0.15s;
 		}
 		.bstp-clear-btn:hover {
-			background: #1a1a1a;
-			color: #fff;
+			background: var(--text-color);
+			color: var(--white);
 		}
 		.bstp-print-btn {
 			padding: 10px 28px;
-			background: #e74c3c;
-			color: #fff;
-			font-family: 'Courier New', monospace;
+			background: var(--primary);
+			color: var(--white);
+			font-family: var(--font-stack);
 			font-size: 14px;
 			font-weight: bold;
-			border: 2px solid #e74c3c;
+			border: 2px solid var(--primary);
 			cursor: pointer;
 			letter-spacing: 1px;
 			transition: background 0.15s;
 		}
 		.bstp-print-btn:hover {
-			background: #c0392b;
-			border-color: #c0392b;
+			background: var(--primary-dark);
+			border-color: var(--primary-dark);
 		}
 		.bstp-print-btn:disabled {
-			background: #ccc;
-			border-color: #ccc;
+			background: var(--disabled-control-bg);
+			border-color: var(--disabled-control-bg);
 			cursor: not-allowed;
 		}
 		.bstp-total-label {
-			color: #555;
+			color: var(--text-muted);
 			font-size: 12px;
 			letter-spacing: 1px;
 		}
