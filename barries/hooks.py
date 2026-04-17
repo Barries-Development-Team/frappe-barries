@@ -97,6 +97,8 @@ page_js = {}
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
+after_migrate = ["barries.setup.set_property_setters"]
+
 # before_app_install = "barries.utils.before_app_install"
 # after_app_install = "barries.utils.after_app_install"
 
@@ -140,11 +142,11 @@ page_js = {}
 
 
 doc_events = {
-    "Item": {
-        # See item.py for definitions of these methods. We use validate and after_insert to manage Item Price records for Standard Buying and Swap Price, which ERPNext does not handle natively.
-        "validate": "barries.overrides.item.validate",
-        "after_insert": "barries.overrides.item.after_insert",
-    }
+	"Item": {
+		# See item.py for definitions of these methods. We use validate and after_insert to manage Item Price records for Standard Buying and Swap Price, which ERPNext does not handle natively.
+		"validate": "barries.overrides.item.validate",
+		"after_insert": "barries.overrides.item.after_insert",
+	}
 }
 
 
