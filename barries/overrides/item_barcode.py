@@ -18,7 +18,7 @@ def override_barcode_type():
 			"field_name": "barcode_type",
 			"property": "options",
 			"property_type": "Text",
-			"value": "\nUPC\nEAN\nAscend SKU\nSerial Number\nOption",
+			"value": "\nUPC\nEAN\nAscend SKU\nOption",
 		}
 	)
 	doc.insert(ignore_permissions=True)
