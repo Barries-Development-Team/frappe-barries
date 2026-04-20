@@ -7,9 +7,9 @@ import frappe
 # Adjust these barcode_type strings to match exactly what is stored
 # in your Item Barcode rows (case-sensitive).
 BARCODE_FIELD_MAP = {
-	"UPC-A": "custom_upc_helper",
+	"UPC": "custom_upc_helper",
 	"EAN": "custom_ean_helper",
-	"Ascend": "custom_ascend_sku_helper",
+	"Ascend SKU": "custom_ascend_sku_helper",
 	"Option": "custom_option_helper",  # note: doc has "helpder" typo — match whichever is in the DB
 }
 
