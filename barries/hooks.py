@@ -143,9 +143,14 @@ after_migrate = ["barries.setup.set_property_setters"]
 
 doc_events = {
 	"Item": {
-		# See item.py for definitions of these methods. We use validate and after_insert to manage Item Price records for Standard Buying and Swap Price, which ERPNext does not handle natively.
-		"validate": "barries.overrides.item.validate",
-		"after_insert": "barries.overrides.item.after_insert",
+		"validate": [
+			"barries.overrides.item.validate",
+			"barries.overrides.item_barcode_sync.validate",
+		],
+		"after_insert": [
+			"barries.overrides.item.after_insert",
+			"barries.overrides.item_barcode_sync.after_insert",
+		],
 	}
 }
 
