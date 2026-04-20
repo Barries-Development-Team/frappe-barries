@@ -10,7 +10,7 @@ BARCODE_FIELD_MAP = {
 	"UPC": "custom_upc_helper",
 	"EAN": "custom_ean_helper",
 	"Ascend SKU": "custom_ascend_sku_helper",
-	"Option": "custom_option_helper",  # note: doc has "helpder" typo — match whichever is in the DB
+	"Option": "custom_option_helper",
 }
 
 
