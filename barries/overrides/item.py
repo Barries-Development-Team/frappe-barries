@@ -26,15 +26,18 @@ def validate(doc, method):
 	"""
 	Fires after ERPNext's own Item.validate().
 
-	On existing items: refreshes custom_swap_price from the Swap Price
-	Item Price record so the Swap Tag print format always has a fresh value.
+	The Item form's custom_swap_price field is the source of truth.
+	On every save of an existing item, we push the current field value
+	down into its matching Item Price record in the "Swap Price" Price
+	List. This keeps the Price List in sync as a passive audit record
+	while letting the user edit directly on the Item form.
 
-	On new items: we do NOT create Item Price records here because the doc
-	has not been inserted yet — Item Price requires a saved item_code as a
-	foreign key. Creation is handled in after_insert() instead.
+	On new items: we skip here because the doc has not been inserted
+	yet — Item Price requires a saved item_code as a foreign key.
+	Creation is handled in after_insert() instead.
 	"""
 	if not doc.is_new():
-		_refresh_swap_price(doc)
+		_upsert_item_prices(doc)
 
 
 def after_insert(doc, method):
@@ -88,23 +91,6 @@ def _upsert_item_prices(doc):
 				}
 			)
 			item_price.insert(ignore_permissions=True)
-
-
-def _refresh_swap_price(doc):
-	"""
-	Pulls the latest Swap Price Item Price value into custom_swap_price
-	on every save of an existing item, so the Swap Tag print format
-	always reflects the current price without needing a separate lookup.
-	"""
-	rate = frappe.db.get_value(
-		"Item Price",
-		filters={
-			"item_code": doc.item_code,
-			"price_list": "Swap Price",
-		},
-		fieldname="price_list_rate",
-	)
-	doc.custom_swap_price = rate or 0
 
 
 @frappe.whitelist()
