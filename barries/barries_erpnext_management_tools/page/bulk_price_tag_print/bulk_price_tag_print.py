@@ -1,4 +1,4 @@
-# barries/barries/page/bulk_swap_tag_print/bulk_swap_tag_print.py
+# barries/barries/page/bulk_price_tag_print/bulk_price_tag_print.py
 
 import json
 
@@ -40,7 +40,7 @@ def get_item_details(item_code):
 @frappe.whitelist()
 def get_zpl_batch(item_codes):
 	"""
-	Render the Swap Tag print format for each item and return a list of ZPL
+	Render the Barries Price Tag print format for each item and return a list of ZPL
 	strings. The browser sends each string to QZ Tray in sequence.
 
 	Accepts a JSON-encoded list of item codes. Each entry is rendered against
@@ -54,10 +54,10 @@ def get_zpl_batch(item_codes):
 		return []
 
 	# Pull the print format's raw_commands template once.
-	pf = frappe.get_doc("Print Format", "Swap Tag")
+	pf = frappe.get_doc("Print Format", "Barries Price Tag")
 	template = pf.raw_commands or pf.html
 	if not template:
-		frappe.throw("Swap Tag print format has no raw_commands or html template.")
+		frappe.throw("Barries Price Tag print format has no raw_commands or html template.")
 
 	zpl_pages = []
 	for item_code in item_codes:
