@@ -26,7 +26,7 @@ app_license = "mit"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/barries/css/barries.css"
-# app_include_js = "/assets/barries/js/barries.js"
+app_include_js = "/assets/barries/js/qz_signing.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/barries/css/barries.css"
@@ -44,8 +44,8 @@ app_license = "mit"
 page_js = {}
 
 # include js in doctype views
-# doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+doctype_js = {"Purchase Receipt": "public/js/purchase_receipt.js"}
+doctype_list_js = {"Item": "public/js/item_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 

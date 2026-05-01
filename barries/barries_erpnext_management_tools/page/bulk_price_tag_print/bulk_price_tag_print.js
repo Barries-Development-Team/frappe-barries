@@ -1,9 +1,9 @@
-// barries/barries/page/bulk_swap_tag_print/bulk_swap_tag_print.js
+// barries/barries/page/bulk_price_tag_print/bulk_price_tag_print.js
 
-frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
+frappe.pages["bulk-price-tag-print"].on_page_load = function (wrapper) {
 	const page = frappe.ui.make_app_page({
 		parent: wrapper,
-		title: "Bulk Swap Tag Print",
+		title: "Bulk Price Tag Print",
 		single_column: true,
 	});
 
@@ -322,7 +322,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 
 		// Try barcode first, fall back to direct item code lookup
 		frappe.call({
-			method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_barcode",
+			method: "barries.barries_erpnext_management_tools.page.bulk_price_tag_print.bulk_price_tag_print.get_item_by_barcode",
 			args: { barcode: val },
 			callback: (r) => {
 				if (r.message) addItemToQueue(r.message);
@@ -331,7 +331,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			// Barcode not found — try as Item Code
 			error: () => {
 				frappe.call({
-					method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_code",
+					method: "barries.barries_erpnext_management_tools.page.bulk_price_tag_print.bulk_price_tag_print.get_item_by_code",
 					args: { item_code: val },
 					callback: (r) => {
 						if (r.message) addItemToQueue(r.message);
@@ -376,7 +376,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 	});
 
 	// ── QZ Tray printer config (the Zebra ZD420 as Windows sees it) ────────────
-	const QZ_PRINTER_NAME = "ZDesigner ZD420-300dpi ZPL";
+	const QZ_PRINTER_NAME = "ZDesigner ZD410-203dpi ZPL";
 
 	// Frappe ships qz-tray.js as a vendored asset; load it lazily on first print.
 	function loadQz() {
@@ -431,7 +431,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			// 1. Render ZPL on the server
 			const r = await new Promise((resolve, reject) => {
 				frappe.call({
-					method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_zpl_batch",
+					method: "barries.barries_erpnext_management_tools.page.bulk_price_tag_print.bulk_price_tag_print.get_zpl_batch",
 					args: { item_codes: JSON.stringify(item_codes) },
 					callback: (res) => resolve(res),
 					error: (err) => reject(err),
@@ -484,7 +484,7 @@ frappe.pages["bulk-swap-tag-print"].on_page_load = function (wrapper) {
 			const [code, qtyStr] = entry.split(":");
 			return new Promise((resolve) => {
 				frappe.call({
-					method: "barries.barries_erpnext_management_tools.page.bulk_swap_tag_print.bulk_swap_tag_print.get_item_by_code",
+					method: "barries.barries_erpnext_management_tools.page.bulk_price_tag_print.bulk_price_tag_print.get_item_by_code",
 					args: { item_code: code },
 					callback: (r) => {
 						if (r.message) {
